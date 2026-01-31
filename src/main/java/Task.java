@@ -23,7 +23,12 @@ public class Task {
         return description;
     }
 
+    public String getTaskType() {
+        return "T";
+    }
+    
+    @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return "[" + getTaskType() + "]" + "[" + getStatusIcon() + "] " + description;
     }
 }
