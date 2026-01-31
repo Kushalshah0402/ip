@@ -15,7 +15,7 @@ Now you have 2 tasks in the list.
 ------------------------------------------------------------
 Got it. I've added this task:
     [E][ ] party (from: Sat 7pm to: Sat 10pm)
- Now you have 3 tasks in the list.
+Now you have 3 tasks in the list.
 ------------------------------------------------------------
 ------------------------------------------------------------
 Here are your tasks:
