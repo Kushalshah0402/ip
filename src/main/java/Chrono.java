@@ -10,8 +10,8 @@ public class Chrono {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("------------------------------------------------------------");
-        System.out.println(" Hello! I'm Chrono");
-        System.out.println(" What can I do for you?");
+        System.out.println("Hello! I'm Chrono");
+        System.out.println("What can I do for you?");
         System.out.println("------------------------------------------------------------");
 
         while (true) {
@@ -27,7 +27,7 @@ public class Chrono {
             if (input.equalsIgnoreCase("list")) {
                 System.out.println("------------------------------------------------------------");
                 if (taskCount == 0) {
-                    System.out.println(" You have no tasks :).");
+                    System.out.println("You have no tasks :).");
                 } else {
                     System.out.println("Here are your tasks:");
                     for (int i = 0; i < taskCount; i++) {
@@ -43,8 +43,8 @@ public class Chrono {
                 if (index >= 0 && index < taskCount) {
                     tasks[index].markAsDone();
                     System.out.println("------------------------------------------------------------");
-                    System.out.println(" Nice! I have marked this task as done:");
-                    System.out.println("   " + tasks[index]);
+                    System.out.println("Nice! I have marked this task as done:");
+                    System.out.println("    " + tasks[index]);
                     System.out.println("------------------------------------------------------------");
                 }
                 continue;
@@ -55,8 +55,8 @@ public class Chrono {
                 if (index >= 0 && index < taskCount) {
                     tasks[index].markAsNotDone();
                     System.out.println("------------------------------------------------------------");
-                    System.out.println(" OK, I've marked this task as not done yet:");
-                    System.out.println("   " + tasks[index]);
+                    System.out.println("OK, I've marked this task as not done yet:");
+                    System.out.println("    " + tasks[index]);
                     System.out.println("------------------------------------------------------------");
                 }
                 continue;
@@ -66,9 +66,9 @@ public class Chrono {
                 String desc = input.substring(5).trim();
                 tasks[taskCount++] = new Todo(desc);
                 System.out.println("------------------------------------------------------------");
-                System.out.println(" Got it. I've added this task:");
-                System.out.println("   " + tasks[taskCount - 1]);
-                System.out.println(" Now you have " + taskCount + " tasks in the list.");
+                System.out.println("Got it. I've added this task:");
+                System.out.println("    " + tasks[taskCount - 1]);
+                System.out.println("Now you have " + taskCount + " tasks in the list.");
                 System.out.println("------------------------------------------------------------");
                 continue;
             }
@@ -80,9 +80,9 @@ public class Chrono {
                     String by = input.substring(byIndex + 3).trim();
                     tasks[taskCount++] = new Deadline(desc, by);
                     System.out.println("------------------------------------------------------------");
-                    System.out.println(" Got it. I've added this task:");
-                    System.out.println("   " + tasks[taskCount - 1]);
-                    System.out.println(" Now you have " + taskCount + " tasks in the list.");
+                    System.out.println("Got it. I've added this task:");
+                    System.out.println("    " + tasks[taskCount - 1]);
+                    System.out.println("Now you have " + taskCount + " tasks in the list.");
                     System.out.println("------------------------------------------------------------");
                 }
                 continue;
@@ -98,15 +98,15 @@ public class Chrono {
                     String to = input.substring(toIndex + 3).trim();
                     tasks[taskCount++] = new Event(desc, from, to);
                     System.out.println("------------------------------------------------------------");
-                    System.out.println(" Got it. I've added this task:");
-                    System.out.println("   " + tasks[taskCount - 1]);
+                    System.out.println("Got it. I've added this task:");
+                    System.out.println("    " + tasks[taskCount - 1]);
                     System.out.println(" Now you have " + taskCount + " tasks in the list.");
                     System.out.println("------------------------------------------------------------");
                 }
                 continue;
             }
             System.out.println("------------------------------------------------------------");
-            System.out.println(" Sorry, I don't understand that command.");
+            System.out.println("Sorry, I don't understand that command.");
             System.out.println("------------------------------------------------------------");
         }
         scanner.close();
