@@ -5,7 +5,18 @@ public class Chrono {
     private static final int MAX_TASKS = 100;
     private static final Task[] tasks = new Task[MAX_TASKS];
     private static int taskCount = 0;
-    private static final String LINE = "------------------------------------------------------------";
+
+    private static final String LINE =
+            "------------------------------------------------------------";
+
+    private static final String COMMAND_MARK = "mark ";
+    private static final String COMMAND_UNMARK = "unmark ";
+    private static final String COMMAND_TODO = "todo ";
+    private static final String COMMAND_DEADLINE = "deadline ";
+    private static final String COMMAND_EVENT = "event ";
+    private static final String KEYWORD_BY = "/by";
+    private static final String KEYWORD_FROM = "/from";
+    private static final String KEYWORD_TO = "/to";
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -25,15 +36,15 @@ public class Chrono {
     private static void handleCommand(String input) {
         if (input.equalsIgnoreCase("list")) {
             handleList();
-        } else if (input.startsWith("mark ")) {
+        } else if (input.startsWith(COMMAND_MARK)) {
             handleMark(input);
-        } else if (input.startsWith("unmark ")) {
+        } else if (input.startsWith(COMMAND_UNMARK)) {
             handleUnmark(input);
-        } else if (input.startsWith("todo ")) {
+        } else if (input.startsWith(COMMAND_TODO)) {
             addTodo(input);
-        } else if (input.startsWith("deadline ")) {
+        } else if (input.startsWith(COMMAND_DEADLINE)) {
             addDeadline(input);
-        } else if (input.startsWith("event ")) {
+        } else if (input.startsWith(COMMAND_EVENT)) {
             addEvent(input);
         } else {
             printLine();
@@ -56,7 +67,10 @@ public class Chrono {
     }
 
     private static void handleMark(String input) {
-        int index = Integer.parseInt(input.substring(5)) - 1;
+        int index = Integer.parseInt(
+                input.substring(COMMAND_MARK.length()).trim()
+        ) - 1;
+
         if (isValidIndex(index)) {
             tasks[index].markAsDone();
             printLine();
@@ -69,7 +83,10 @@ public class Chrono {
     }
 
     private static void handleUnmark(String input) {
-        int index = Integer.parseInt(input.substring(7)) - 1;
+        int index = Integer.parseInt(
+                input.substring(COMMAND_UNMARK.length()).trim()
+        ) - 1;
+
         if (isValidIndex(index)) {
             tasks[index].markAsNotDone();
             printLine();
@@ -82,39 +99,54 @@ public class Chrono {
     }
 
     private static void addTodo(String input) {
-        String description = input.substring(5).trim();
+        String description =
+                input.substring(COMMAND_TODO.length()).trim();
         tasks[taskCount++] = new Todo(description);
         printTaskAdded();
     }
 
     private static void addDeadline(String input) {
-        int byIndex = input.indexOf("/by");
+        int byIndex = input.indexOf(KEYWORD_BY);
         if (byIndex == -1) {
             printInvalidFormat();
             return;
         }
 
-        String description = input.substring(9, byIndex).trim();
-        String by = input.substring(byIndex + 3).trim();
+        String description =
+                input.substring(COMMAND_DEADLINE.length(), byIndex).trim();
+        String by =
+                input.substring(byIndex + KEYWORD_BY.length()).trim();
+
         tasks[taskCount++] = new Deadline(description, by);
         printTaskAdded();
     }
 
     private static void addEvent(String input) {
-        int fromIndex = input.indexOf("/from");
-        int toIndex = input.indexOf("/to");
+    int fromIndex = input.indexOf(KEYWORD_FROM);
+    int toIndex = input.indexOf(KEYWORD_TO);
 
-        if (fromIndex == -1 || toIndex == -1) {
-            printInvalidFormat();
-            return;
-        }
-
-        String description = input.substring(6, fromIndex).trim();
-        String from = input.substring(fromIndex + 5, toIndex).trim();
-        String to = input.substring(toIndex + 3).trim();
-        tasks[taskCount++] = new Event(description, from, to);
-        printTaskAdded();
+    if (fromIndex == -1 || toIndex == -1 || toIndex < fromIndex) {
+        printInvalidFormat();
+        return;
     }
+
+    String description =
+        input.substring(COMMAND_EVENT.length(), fromIndex).trim();
+    String from =
+        input.substring(
+            fromIndex + KEYWORD_FROM.length(),
+            toIndex
+        ).trim();
+
+    String to =
+        input.substring(
+            toIndex + KEYWORD_TO.length()
+        ).trim();
+
+    tasks[taskCount++] = new Event(description, from, to);
+    printTaskAdded();
+}
+
 
     private static void printTaskAdded() {
         printLine();
