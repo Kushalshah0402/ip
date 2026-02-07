@@ -55,9 +55,8 @@ public class Chrono {
     private static void handleList() {
         printLine();
         if (taskCount == 0) {
-            System.out.println("You have no tasks :).");
+            System.out.println("Yayyy!! You have no tasks :)");
         } else {
-            System.out.println("Here are your tasks:");
             for (int i = 0; i < taskCount; i++) {
                 System.out.println((i + 1) + ". " + tasks[i]);
             }
@@ -65,35 +64,33 @@ public class Chrono {
         printLine();
     }
 
-    private static void handleMark(String input) {
-        int index = Integer.parseInt(
-                input.substring(COMMAND_MARK.length()).trim()
-        ) - 1;
-
-        if (isValidIndex(index)) {
-            tasks[index].markAsDone();
-            printLine();
-            System.out.println("Nice! I have marked this task as done:");
-            System.out.println("    " + tasks[index]);
-            printLine();
-        } else {
-            printInvalidTask();
-        }
+    private static void handleMark(String input) throws ChronoException {
+        Task task = getTaskFromIndex(input, COMMAND_MARK);
+        task.markAsDone();
+        printLine();
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println("    " + task);
+        printLine();
     }
 
-    private static void handleUnmark(String input) {
-        int index = Integer.parseInt(
-                input.substring(COMMAND_UNMARK.length()).trim()
-        ) - 1;
+    private static void handleUnmark(String input) throws ChronoException {
+        Task task = getTaskFromIndex(input, COMMAND_UNMARK);
+        task.markAsNotDone();
+        printLine();
+        System.out.println("Oops! I guess you have yet to do:");
+        System.out.println("    " + task);
+        printLine();
+    }
 
-        if (isValidIndex(index)) {
-            tasks[index].markAsNotDone();
-            printLine();
-            System.out.println("OK, I've marked this task as not done yet:");
-            System.out.println("    " + tasks[index]);
-            printLine();
-        } else {
-            printInvalidTask();
+    private static Task getTaskFromIndex(String input, String command) throws ChronoException {
+        try {
+            int index = Integer.parseInt(input.substring(command.length()).trim()) - 1;
+            if (index < 0 || index >= taskCount) {
+                throw new ChronoException("Invalid task number.");
+            }
+            return tasks[index];
+        } catch (NumberFormatException e) {
+            throw new ChronoException("Please provide a valid task number.");
         }
     }
 
@@ -152,16 +149,6 @@ public class Chrono {
         System.out.println("Got it. I've added this task:");
         System.out.println("    " + tasks[taskCount - 1]);
         System.out.println("Now you have " + taskCount + " tasks in the list.");
-        printLine();
-    }
-
-    private static boolean isValidIndex(int index) {
-        return index >= 0 && index < taskCount;
-    }
-
-    private static void printInvalidTask() {
-        printLine();
-        System.out.println("Invalid task number.");
         printLine();
     }
 
