@@ -6,9 +6,7 @@ public class Chrono {
     private static final Task[] tasks = new Task[MAX_TASKS];
     private static int taskCount = 0;
 
-    private static final String LINE =
-            "------------------------------------------------------------";
-
+    private static final String LINE = "------------------------------------------------------------";
     private static final String COMMAND_MARK = "mark ";
     private static final String COMMAND_UNMARK = "unmark ";
     private static final String COMMAND_TODO = "todo ";
@@ -21,35 +19,36 @@ public class Chrono {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         printWelcome();
-
         while (true) {
-            String input = scanner.nextLine().trim();
-            if (input.equalsIgnoreCase("bye")) {
-                printGoodbye();
-                break;
+            try {
+                String input = scanner.nextLine().trim();
+                if (input.equalsIgnoreCase("bye")) {
+                    printGoodbye();
+                    break;
+                }
+                handleCommand(input);
+            } catch (ChronoException e) {
+                printError(e.getMessage());
             }
-            handleCommand(input);
         }
         scanner.close();
     }
 
-    private static void handleCommand(String input) {
-        if (input.equalsIgnoreCase("list")) {
+    private static void handleCommand(String input) throws ChronoException {
+        if (input.equals("list")) {
             handleList();
         } else if (input.startsWith(COMMAND_MARK)) {
             handleMark(input);
         } else if (input.startsWith(COMMAND_UNMARK)) {
             handleUnmark(input);
-        } else if (input.startsWith(COMMAND_TODO)) {
+        } else if (input.startsWith("todo")) {
             addTodo(input);
-        } else if (input.startsWith(COMMAND_DEADLINE)) {
+        } else if (input.startsWith("deadline")) {
             addDeadline(input);
-        } else if (input.startsWith(COMMAND_EVENT)) {
+        } else if (input.startsWith("event")) {
             addEvent(input);
         } else {
-            printLine();
-            System.out.println("Sorry, I don't understand that command.");
-            printLine();
+            throw new ChronoException("That's an invalid command :(");
         }
     }
 
@@ -182,6 +181,12 @@ public class Chrono {
     private static void printGoodbye() {
         printLine();
         System.out.println("Shutting down Chrono systems. Goodbye!");
+        printLine();
+    }
+
+    private static void printError(String message) {
+        printLine();
+        System.out.println("Sorry!! " + message);
         printLine();
     }
 
