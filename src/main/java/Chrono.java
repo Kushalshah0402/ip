@@ -86,7 +86,7 @@ public class Chrono {
         try {
             int index = Integer.parseInt(input.substring(command.length()).trim()) - 1;
             if (index < 0 || index >= taskCount) {
-                throw new ChronoException("Invalid task number.");
+                throw new ChronoException("That task number does not exist.");
             }
             return tasks[index];
         } catch (NumberFormatException e) {
@@ -94,67 +94,61 @@ public class Chrono {
         }
     }
 
-    private static void addTodo(String input) {
-        String description =
-                input.substring(COMMAND_TODO.length()).trim();
+    private static void addTodo(String input) throws ChronoException {
+        String description = extractDescription(input, COMMAND_TODO);
         tasks[taskCount++] = new Todo(description);
         printTaskAdded();
     }
 
-    private static void addDeadline(String input) {
+
+    private static void addDeadline(String input) throws ChronoException {
         int byIndex = input.indexOf(KEYWORD_BY);
         if (byIndex == -1) {
-            printInvalidFormat();
-            return;
+            throw new ChronoException("Deadline must have /by.");
         }
 
-        String description =
-                input.substring(COMMAND_DEADLINE.length(), byIndex).trim();
-        String by =
-                input.substring(byIndex + KEYWORD_BY.length()).trim();
-
+        String description = extractDescription(input.substring(0, byIndex), COMMAND_DEADLINE);
+        String by = input.substring(byIndex + KEYWORD_BY.length()).trim();
+        if (by.isEmpty()) {
+            throw new ChronoException("The deadline time cannot be empty.");
+        }
         tasks[taskCount++] = new Deadline(description, by);
         printTaskAdded();
     }
 
-    private static void addEvent(String input) {
-    int fromIndex = input.indexOf(KEYWORD_FROM);
-    int toIndex = input.indexOf(KEYWORD_TO);
+    private static void addEvent(String input) throws ChronoException {
+        int fromIndex = input.indexOf(KEYWORD_FROM);
+        int toIndex = input.indexOf(KEYWORD_TO);
+        if (fromIndex == -1 || toIndex == -1 || toIndex < fromIndex) {
+            throw new ChronoException("Event must have /from and /to.");
+        }
+        String description = extractDescription(input.substring(0, fromIndex), COMMAND_EVENT);
+        String from = input.substring(fromIndex + KEYWORD_FROM.length(), toIndex).trim();
+        String to = input.substring(toIndex + KEYWORD_TO.length()).trim();
 
-    if (fromIndex == -1 || toIndex == -1 || toIndex < fromIndex) {
-        printInvalidFormat();
-        return;
+        if (from.isEmpty() || to.isEmpty()) {
+            throw new ChronoException("Event start and end time cannot be empty.");
+        }
+        tasks[taskCount++] = new Event(description, from, to);
+        printTaskAdded();
     }
 
-    String description =
-        input.substring(COMMAND_EVENT.length(), fromIndex).trim();
-    String from =
-        input.substring(
-            fromIndex + KEYWORD_FROM.length(),
-            toIndex
-        ).trim();
-
-    String to =
-        input.substring(
-            toIndex + KEYWORD_TO.length()
-        ).trim();
-
-    tasks[taskCount++] = new Event(description, from, to);
-    printTaskAdded();
-}
-
+    private static String extractDescription(String input, String command) throws ChronoException {
+        if (input.length() <= command.length()) {
+            throw new ChronoException("The description cannot be empty.");
+        }
+        String description = input.substring(command.length()).trim();
+        if (description.isEmpty()) {
+            throw new ChronoException("The description cannot be empty.");
+        }
+        return description;
+    }
 
     private static void printTaskAdded() {
         printLine();
         System.out.println("Got it. I've added this task:");
         System.out.println("    " + tasks[taskCount - 1]);
         System.out.println("Now you have " + taskCount + " tasks in the list.");
-        printLine();
-    }
-
-    private static void printInvalidFormat() {
-        printLine();
-        System.out.println("Invalid command format.");
         printLine();
     }
 
