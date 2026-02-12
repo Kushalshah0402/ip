@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class Chrono {
-
     private static final int MAX_TASKS = 100;
     private static final Task[] tasks = new Task[MAX_TASKS];
     private static int taskCount = 0;
