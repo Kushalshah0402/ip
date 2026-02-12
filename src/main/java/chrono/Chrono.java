@@ -1,4 +1,12 @@
+package chrono;
 import java.util.Scanner;
+
+import chrono.exception.ChronoException;
+import chrono.task.Deadline;
+import chrono.task.Event;
+import chrono.task.Task;
+import chrono.task.Todo;
+
 
 public class Chrono {
     private static final int MAX_TASKS = 100;
