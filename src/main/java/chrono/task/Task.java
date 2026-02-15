@@ -25,6 +25,10 @@ public class Task {
         return description;
     }
 
+    public boolean isDone() {
+        return isDone;
+    }
+
     public String getTaskType() {
         return "T";
     }
