@@ -8,6 +8,14 @@ public class Event extends Task {
         this.from = from;
         this.to = to;
     }
+    public String getFrom() {
+        return from; // needed for save/load
+    }
+
+    public String getTo() {
+        return to; // needed for save/load
+    }
+    
     @Override
     public String getTaskType() {
         return "E";

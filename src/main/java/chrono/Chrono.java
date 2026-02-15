@@ -1,6 +1,11 @@
 package chrono;
 import java.util.Scanner;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import chrono.exception.ChronoException;
 import chrono.task.Deadline;
 import chrono.task.Event;
@@ -13,6 +18,7 @@ public class Chrono {
     private static final Task[] tasks = new Task[MAX_TASKS];
     private static int taskCount = 0;
 
+    private static final String DATA_FILE = "./data/chrono.txt";
     private static final String LINE = "------------------------------------------------------------";
     private static final String COMMAND_MARK = "mark ";
     private static final String COMMAND_UNMARK = "unmark ";
@@ -24,16 +30,19 @@ public class Chrono {
     private static final String KEYWORD_TO = "/to";
 
     public static void main(String[] args) {
+        loadTasks();
         Scanner scanner = new Scanner(System.in);
         printWelcome();
         while (true) {
             try {
                 String input = scanner.nextLine().trim();
                 if (input.equalsIgnoreCase("bye")) {
+                    saveTasks();
                     printGoodbye();
                     break;
                 }
                 handleCommand(input);
+                saveTasks();
             } catch (ChronoException e) {
                 printError(e.getMessage());
             }
@@ -180,5 +189,70 @@ public class Chrono {
 
     private static void printLine() {
         System.out.println(LINE);
+    }
+
+    private static void saveTasks() {
+        try {
+            File file = new File(DATA_FILE);
+            file.getParentFile().mkdirs();
+            FileWriter writer = new FileWriter(file);
+            for (int i = 0; i < taskCount; i++) {
+                Task t = tasks[i];
+                String line = "";
+                if (t instanceof Todo) {
+                    line = "T | " + (t.isDone() ? "1" : "0") + " | " + t.getDescription();
+                } else if (t instanceof Deadline) {
+                    line = "D | " + (t.isDone() ? "1" : "0") + " | " + t.getDescription() +
+                           " | " + ((Deadline) t).getBy();
+                } else if (t instanceof Event) {
+                    line = "E | " + (t.isDone() ? "1" : "0") + " | " + t.getDescription() +
+                           " | " + ((Event) t).getFrom() + " | " + ((Event) t).getTo();
+                }
+                writer.write(line + "\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving tasks.");
+        }
+    }
+
+    private static void loadTasks() {
+        File file = new File(DATA_FILE);
+        if (!file.exists()) return;
+
+        try {
+            Scanner fileScanner = new Scanner(file);
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine().trim();
+                if (line.isEmpty()) continue; 
+                String[] parts = line.split("\\|");
+                for (int i = 0; i < parts.length; i++) {
+                    parts[i] = parts[i].trim();
+                }
+                if (parts.length < 3) continue;
+
+                String type = parts[0];
+                boolean isDone = parts[1].equals("1");
+                String desc = parts[2];
+
+                if (type.equals("T")) {
+                    tasks[taskCount] = new Todo(desc);
+                } else if (type.equals("D")) {
+                    if (parts.length < 4) continue;
+                    tasks[taskCount] = new Deadline(desc, parts[3]);
+                } else if (type.equals("E")) {
+                    if (parts.length < 5) continue;
+                    tasks[taskCount] = new Event(desc, parts[3], parts[4]);
+                }
+                if (tasks[taskCount] != null) {
+                    if (isDone) tasks[taskCount].markAsDone();
+                    taskCount++;
+                }
+            }
+            fileScanner.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error loading tasks.");
+        }
     }
 }
