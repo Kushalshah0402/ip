@@ -1,2 +1,2 @@
 D | 0 | return book | Sunday
-E | 0 | party | Sat 7pm | Sat 10pm
+T | 0 | assignment
