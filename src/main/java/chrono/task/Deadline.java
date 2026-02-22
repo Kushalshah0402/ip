@@ -16,7 +16,6 @@ public class Deadline extends Task {
     private LocalDateTime parseDateTime(String input) throws ChronoException {
         try {
             input = input.trim();
-
             if (input.startsWith("today")) {
                 String timePart = input.substring(5).trim();
                 LocalDate today = LocalDate.now();
@@ -27,7 +26,7 @@ public class Deadline extends Task {
             if (parts.length != 2) {
                 throw new ChronoException("Invalid date format! Use dd/MM/yyyy HHmm");
             }
-
+            
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d/M/yyyy");
             LocalDate date = LocalDate.parse(parts[0], dateFormatter);
             LocalTime time = parseTime(parts[1]);
