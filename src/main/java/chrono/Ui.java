@@ -81,4 +81,10 @@ public class Ui {
     private void showLine() {
         System.out.println(LINE);
     }
+
+    public void showMessage(String message) {
+        showLine();
+        System.out.println(message);
+        showLine();
+    }
 }

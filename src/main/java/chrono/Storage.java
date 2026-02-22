@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
 
 public class Storage {
     private final String filePath;
@@ -72,11 +73,13 @@ public class Storage {
                     line = "T | " + (t.isDone() ? "1" : "0") + " | " + t.getDescription();
                 } else if (t instanceof Deadline) {
                     Deadline d = (Deadline) t;
-                    line = "D | " + (t.isDone() ? "1" : "0") + " | " + t.getDescription() + " | " + d.getBy();
+                    line = "D | " + (t.isDone() ? "1" : "0") + " | "  + t.getDescription() + " | " 
+                            + d.getBy().format(DateTimeFormatter.ofPattern("d/M/yyyy HHmm"));
                 } else if (t instanceof Event) {
                     Event e = (Event) t;
-                    line = "E | " + (t.isDone() ? "1" : "0") + " | " + t.getDescription() + " | " + e.getFrom() + " | " + e.getTo();
+                    line = "E | " + (t.isDone() ? "1" : "0") + " | " + t.getDescription() + " | " + e.getFromString() + " | " + e.getToString();
                 }
+
                 writer.write(line + "\n");
             }
             writer.close();

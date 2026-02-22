@@ -1,5 +1,9 @@
 package chrono;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import chrono.exception.ChronoException;
 import chrono.task.*;
 
@@ -52,6 +56,12 @@ public class Parser {
             handleEvent(input, tasks, ui);
             return;
         }
+
+        if (input.startsWith("on ")) {
+            handleOnCommand(input, tasks, ui);
+            return;
+        }
+
         throw new ChronoException("That's an invalid command :(");
     }
 
@@ -115,6 +125,43 @@ public class Parser {
         tasks.add(task);
         ui.showTaskAdded(task, tasks.size());
     }
+
+    private static void handleOnCommand(String input, TaskList tasks, Ui ui) throws ChronoException {
+        String[] parts = input.split(" ", 2);
+        if (parts.length < 2) {
+            throw new ChronoException("Please provide a date! Format: dd/MM/yyyy");
+        }
+
+        String dateStr = parts[1].trim();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+        LocalDate date;
+        try {
+            date = LocalDate.parse(dateStr, formatter);
+        } catch (Exception e) {
+            throw new ChronoException("Invalid date format! Use dd/MM/yyyy");
+        }
+
+        // now filter tasks
+        List<Task> tasksOnDate = tasks.getAll().stream().filter(t -> {
+            if (t instanceof Deadline) {
+                Deadline d = (Deadline) t;
+                return d.getBy().toLocalDate().equals(date);
+            } else if (t instanceof Event) {
+                Event e = (Event) t;
+                LocalDate start = e.getFrom().toLocalDate();
+                LocalDate end = e.getTo().toLocalDate();
+                return ( !date.isBefore(start) && !date.isAfter(end) ); // within range
+            }
+            return false;
+        }).toList();
+
+        if (tasksOnDate.isEmpty()) {
+            ui.showMessage("No tasks found on " + date.format(formatter));
+        } else {
+            ui.showList(tasksOnDate);
+        }
+    }
+
 
     private static int extractIndex(String input, String command, TaskList tasks) throws ChronoException {
         try {
