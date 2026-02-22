@@ -3,6 +3,7 @@ package chrono;
 import chrono.task.Task;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskList {
     private final ArrayList<Task> tasks;
@@ -37,4 +38,11 @@ public class TaskList {
     public boolean isEmpty() {
         return tasks.isEmpty();
     }
+
+    public List<Task> find(String keyword) {
+        return tasks.stream()
+            .filter(t -> t.getDescription().toLowerCase().contains(keyword.toLowerCase()))
+            .collect(Collectors.toList());
+    }
+
 }

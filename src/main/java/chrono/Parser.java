@@ -14,6 +14,7 @@ public class Parser {
     private static final String COMMAND_DEADLINE = "deadline";
     private static final String COMMAND_EVENT = "event";
     private static final String COMMAND_DELETE = "delete ";
+    private static final String COMMAND_FIND = "find ";
 
     private static final String KEYWORD_BY = "/by";
     private static final String KEYWORD_FROM = "/from";
@@ -61,6 +62,12 @@ public class Parser {
             handleOnCommand(input, tasks, ui);
             return;
         }
+
+        if (input.startsWith(COMMAND_FIND)) {
+            handleFind(input, tasks, ui);
+            return;
+        }
+
 
         throw new ChronoException("That's an invalid command :(");
     }
@@ -141,7 +148,6 @@ public class Parser {
             throw new ChronoException("Invalid date format! Use dd/MM/yyyy");
         }
 
-        // now filter tasks
         List<Task> tasksOnDate = tasks.getAll().stream().filter(t -> {
             if (t instanceof Deadline) {
                 Deadline d = (Deadline) t;
@@ -161,6 +167,16 @@ public class Parser {
             ui.showList(tasksOnDate);
         }
     }
+
+    private static void handleFind(String input, TaskList tasks, Ui ui) throws ChronoException {
+        String keyword = input.substring(COMMAND_FIND.length()).trim();
+        if (keyword.isEmpty()) {
+            throw new ChronoException("Please provide a keyword to search.");
+        }
+        List<Task> matching = tasks.find(keyword);
+        ui.showFindResults(matching);
+    }
+
 
 
     private static int extractIndex(String input, String command, TaskList tasks) throws ChronoException {
