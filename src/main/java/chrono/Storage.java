@@ -9,12 +9,27 @@ import java.util.List;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Handles loading and saving tasks to a file.
+ */
 public class Storage {
     private final String filePath;
+
+    /**
+     * Creates a Storage instance with the given file path.
+     * 
+     * @param filePath Path to the storage file
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the storage file.
+     * 
+     * @return List of tasks loaded from file
+     * @throws ChronoException If file reading fails
+     */
     public List<Task> load() throws ChronoException {
         List<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -62,6 +77,11 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves the given list of tasks to the storage file.
+     * 
+     * @param tasks Tasks to be written to file
+     */
     public void save(List<Task> tasks) {
         try {
             File file = new File(filePath);

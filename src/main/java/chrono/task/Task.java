@@ -1,9 +1,18 @@
 package chrono.task;
 
+
+/** 
+ * Represents a generic task with a description and completion status. 
+ */
 public class Task {
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Creates a task with the given description.
+     *
+     * @param description Task description
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;

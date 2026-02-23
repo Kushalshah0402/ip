@@ -7,6 +7,10 @@ import java.util.List;
 import chrono.exception.ChronoException;
 import chrono.task.*;
 
+/**
+ * Handles parsing of user input and dispatches commands
+ * to the appropriate handlers.
+ */
 public class Parser {
     private static final String COMMAND_MARK = "mark ";
     private static final String COMMAND_UNMARK = "unmark ";
@@ -20,6 +24,14 @@ public class Parser {
     private static final String KEYWORD_FROM = "/from";
     private static final String KEYWORD_TO = "/to";
 
+    /**
+     * Parses a user input command and executes the corresponding action.
+     * 
+     * @param input Raw user input
+     * @param tasks Task list to operate on
+     * @param ui UI used for output
+     * @throws ChronoException If the command is invalid
+     */
     public static void parse(String input, TaskList tasks, Ui ui) throws ChronoException {
         input = input.trim();
         if (input.equals("list")) {
@@ -99,6 +111,12 @@ public class Parser {
         ui.showTaskAdded(task, tasks.size());
     }
 
+    /**
+     * Handles creation of a deadline task.
+     * Expected format: deadline <description> /by <date>
+     * 
+     * @throws ChronoException If format is invalid or date is missing
+     */
     private static void handleDeadline(String input, TaskList tasks, Ui ui) throws ChronoException {
         int byIndex = input.indexOf(KEYWORD_BY);
         if (byIndex == -1) {
@@ -115,6 +133,12 @@ public class Parser {
         ui.showTaskAdded(task, tasks.size());
     }
 
+    /**
+     * Handles creation of an event task.
+     * Expected format: event <description> /from <start> /to <end>
+     * 
+     * @throws ChronoException If format is invalid or fields are missing
+     */
     private static void handleEvent(String input, TaskList tasks, Ui ui) throws ChronoException {
         int fromIndex = input.indexOf(KEYWORD_FROM);
         int toIndex = input.indexOf(KEYWORD_TO);
@@ -133,6 +157,12 @@ public class Parser {
         ui.showTaskAdded(task, tasks.size());
     }
 
+    /**
+     * Handles the 'on' command which lists tasks occurring on a given date.
+     * Expected format: on dd/MM/yyyy
+     * 
+     * @throws ChronoException If date format is invalid
+     */
     private static void handleOnCommand(String input, TaskList tasks, Ui ui) throws ChronoException {
         String[] parts = input.split(" ", 2);
         if (parts.length < 2) {
@@ -178,7 +208,12 @@ public class Parser {
     }
 
 
-
+    /**
+     * Extracts a task index from a command string.
+     * 
+     * @return Zero-based task index
+     * @throws ChronoException If index is invalid
+     */
     private static int extractIndex(String input, String command, TaskList tasks) throws ChronoException {
         try {
             int index = Integer.parseInt(input.substring(command.length()).trim()) - 1;
@@ -191,6 +226,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Extracts the description portion of a command.
+     * 
+     * @return Trimmed task description
+     * @throws ChronoException If description is empty
+     */
     private static String extractDescription(String input, String command) throws ChronoException {
         if (input.length() <= command.length()) {
             throw new ChronoException("The description cannot be empty.");
