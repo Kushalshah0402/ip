@@ -4,15 +4,26 @@ import chrono.task.Task;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Handles all user interaction including input and output display.
+ */
 public class Ui {
 
     private static final String LINE = "------------------------------------------------------------";
     private final Scanner scanner;
 
+    /**
+     * Creates a Ui instance for reading user input.
+     */
     public Ui() {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Reads a command entered by the user.
+     * 
+     * @return Trimmed user input string
+     */
     public String readCommand() {
         return scanner.nextLine().trim();
     }
@@ -36,6 +47,11 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Displays a list of tasks.
+     *
+     * @param tasks Tasks to display
+     */
     public void showList(List<Task> tasks) {
         showLine();
         if (tasks.isEmpty()) {
