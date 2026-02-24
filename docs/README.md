@@ -41,65 +41,119 @@ Welcome to **Chrono**, your friendly command-line personal task manager! Chrono 
 ### 1. List all tasks
 Shows all tasks currently in your list.
 
+```
+list
+```
+
 ---
 
 ### 2. Add a todo
-**Example:**
+```
+todo <description>
+```
+
+Example:
+```
 todo read book
+```
 
 ---
 
 ### 3. Add a deadline
+```
 deadline <description> /by <date> <time>
-**Example:**
+```
+
+Example:
+```
 deadline return book /by 2/12/2019 1800
-- You can also use `today` instead of a full date:
+```
+
+You can also use `today` instead of a full date:
+
+```
 deadline submit report /by today 1800
+```
 
 ---
 
 ### 4. Add an event
+```
 event <description> /from <date/time> /to <date/time>
-**Example:**
+```
+
+Example:
+```
 event birthday party /from 2/12/2019 1600 /to 2/12/2019 1800
-- You can also use `today` for the current date:
+```
+
+You can also use `today` for the current date:
+
+```
 event team meeting /from today 1400 /to today 1500
+```
 
 ---
 
 ### 5. Mark a task as done
+```
 mark <task number>
-**Example:**
+```
+
+Example:
+```
 mark 2
+```
 
 ---
 
 ### 6. Unmark a task
+```
 unmark <task number>
-**Example:**
+```
+
+Example:
+```
 unmark 2
+```
 
 ---
 
 ### 7. Delete a task
+```
 delete <task number>
-**Example:**
+```
+
+Example:
+```
 delete 3
+```
 
 ---
 
 ### 8. Find tasks by keyword
+```
 find <keyword>
-**Example:**
+```
+
+Example:
+```
 find book
+```
 
 ---
 
 ### 9. Show tasks on a specific date
+```
 on <date>
-**Example:**
+```
+
+Example:
+```
 on 02/12/2019
-- Shows all deadlines and events occurring on that date.
+```
+
+Shows all deadlines and events occurring on that date.
 
 ---
 
