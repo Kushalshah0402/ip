@@ -22,7 +22,6 @@ Welcome to **Chrono**, your command-line personal task manager that helps you ma
    - [Exiting the program: `bye`](#exiting-the-program-bye)
 5. [FAQ](#faq)
 6. [Known Issues](#known-issues)
-7. [Command Summary Table](#command-summary-table)
 
 ---
 
@@ -294,23 +293,6 @@ A: No, there is no hard limit on the number of tasks. However, very large task l
 3. **Long descriptions**: Task descriptions that are extremely long (over 200 characters) may not display properly in some terminal windows.
 
 4. **Special characters**: Using special characters like `|` or `/` in task descriptions (other than the command separators `/by`, `/from`, `/to`) may cause parsing errors.
-
----
-
-## Command Summary Table
-
-| Action | Format | Examples |
-|--------|--------|----------|
-| **Add Todo** | `todo DESCRIPTION` | `todo read book` |
-| **Add Deadline** | `deadline DESCRIPTION /by DATE TIME` | `deadline return book /by 2/12/2019 1800`<br>`deadline homework /by today 2359` |
-| **Add Event** | `event DESCRIPTION /from DATE TIME /to DATE TIME` | `event meeting /from 2/12/2019 1400 /to 2/12/2019 1600`<br>`event party /from today 1800 /to today 2200` |
-| **List Tasks** | `list` | `list` |
-| **Mark Done** | `mark INDEX` | `mark 1` |
-| **Mark Not Done** | `unmark INDEX` | `unmark 1` |
-| **Delete Task** | `delete INDEX` | `delete 2` |
-| **Find by Keyword** | `find KEYWORD` | `find book` |
-| **Find by Date** | `on DATE` | `on 02/12/2019` |
-| **Exit** | `bye` | `bye` |
 
 ---
 
