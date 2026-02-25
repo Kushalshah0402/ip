@@ -44,7 +44,7 @@ public class Deadline extends Task {
             if (parts.length != 2) {
                 throw new ChronoException("Invalid date format! Use dd/MM/yyyy HHmm");
             }
-
+            
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d/M/yyyy");
             LocalDate date = LocalDate.parse(parts[0], dateFormatter);
             LocalTime time = parseTime(parts[1]);
