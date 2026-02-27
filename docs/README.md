@@ -297,3 +297,4 @@ A: No, there is no hard limit on the number of tasks. However, very large task l
 ---
 
 **Enjoy using Chrono to organize your life one task at a time!**
+
