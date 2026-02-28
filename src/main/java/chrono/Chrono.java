@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Main controller for the Chrono application.
  * Handles application lifecycle including loading tasks,
- * reads user input, executes commands, and saves tasks.
+ * reads user input, executes commands, and saves all the tasks.
  */
 public class Chrono {
     private Storage storage;
