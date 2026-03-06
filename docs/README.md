@@ -28,7 +28,7 @@ Welcome to **Chrono**, your command-line personal task manager that helps you ma
 ## Quick Start
 
 1. Ensure you have Java 11 or above installed on your computer.
-2. Download the latest `chrono.jar` from [here](link-to-release).
+2. Download the latest `chrono.jar` from [here](https://github.com/Kushalshah0402/ip/releases/tag/A-Release).
 3. Copy the file to the folder you want to use as the home folder for Chrono.
 4. Open a command terminal, navigate to the folder containing `chrono.jar`, and run:
    ```
